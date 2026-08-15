@@ -1,0 +1,34 @@
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["clhostmapcode*"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clhostmap"
+version = "1.0.0"
+readme = "README.md"
+description = "Tool to check if other people have tried impersonating your company/website."
+requires-python = ">=3.12"
+keywords = [
+    "osint",
+    "brand-protection",
+    "typosquatting",
+    "phishing-recon",
+    "subdomain-scanner",
+    "cybersecurity-tools"
+]
+
+dependencies = [
+    "curl_cffi",
+    "tldextract>=5.1.0",
+    "colorama>=0.4.6"
+]
+
+[project.scripts]
+clhostmap = "clhostmapcode.main:chtrack"
+
+[project.urls]
+Repository = "https://github.com/SphericalFlower52811/clhostmap"
