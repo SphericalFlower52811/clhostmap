@@ -80,7 +80,7 @@ async def testhashes(session, sem):
     return baselines
 
 
-async def test_single_url(session, url, show_unregistered, show_status, ignored_domains, baseline_signatures, target, sem):
+async def test_single_url(session, url, show_unregistered, show_status, ignored_domains, baseline_signatures, target, sem, print_lock, counter_data):
     async with sem:
         current_domain = url.replace("https://", "").replace("http://", "").split('/')[0]
         try:
@@ -109,51 +109,59 @@ async def test_single_url(session, url, show_unregistered, show_status, ignored_
 
                 if is_false_positive:
                     if show_unregistered:
-                        if show_status:
-                            print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} (Status: {status} [Fake 200])")
-                        else:
-                            print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
+                        async with print_lock:
+                            if show_status:
+                                print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} (Status: {status} [Fake 200])")
+                            else:
+                                print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
                     return
 
                 if current_domain in ignored_domains:
                     if show_status:
-                        print(f"[{Fore.LIGHTBLACK_EX}IGNORED{Fore.RESET}] {url} (Status: {status})")
+                        async with print_lock:
+                            print(f"[{Fore.LIGHTBLACK_EX}IGNORED{Fore.RESET}] {url} (Status: {status})")
                     return
 
-                if show_status:
-                    print(f"[{Fore.RED}REGISTERED{Fore.RESET}] {url} (Status: {status})")
-                else:
-                    print(f"[{Fore.RED}REGISTERED{Fore.RESET}] {url}")
+                async with print_lock:
+                    counter_data["threats"] += 1
+                    if show_status:
+                        print(f"[{Fore.RED}REGISTERED{Fore.RESET}] {url} (Status: {status})")
+                    else:
+                        print(f"[{Fore.RED}REGISTERED{Fore.RESET}] {url}")
                     
             elif show_unregistered:
-                if current_domain in ignored_domains:
-                    print(f"[{Fore.LIGHTBLACK_EX}IGNORED{Fore.RESET}] {url}")
-                elif show_status:
-                    print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} (Status: {status})")
-                else:
-                    print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
+                async with print_lock:
+                    if current_domain in ignored_domains:
+                        print(f"[{Fore.LIGHTBLACK_EX}IGNORED{Fore.RESET}] {url}")
+                    elif show_status:
+                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} (Status: {status})")
+                    else:
+                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
 
         except errors.RequestsError as e:
             if show_unregistered:
                 if current_domain in ignored_domains:
                     return
-                if show_status:
-                    err_msg = str(e).lower()
-                    if "dns" in err_msg or "resolve" in err_msg:
-                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}DNS Error{Fore.RESET})")
+                async with print_lock:
+                    if show_status:
+                        err_msg = str(e).lower()
+                        if "dns" in err_msg or "resolve" in err_msg:
+                            print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}DNS Error{Fore.RESET})")
+                        else:
+                            print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}Conn Error{Fore.RESET})")
                     else:
-                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}Conn Error{Fore.RESET})")
-                else:
-                    print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
+                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
                     
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception:
             if show_unregistered and current_domain not in ignored_domains:
-                if show_status:
-                    print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}Error{Fore.RESET})")
-                else:
-                    print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
+                async with print_lock:
+                    if show_status:
+                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url} ({Fore.LIGHTBLACK_EX}Error{Fore.RESET})")
+                    else:
+                        print(f"[{Fore.GREEN}NOT REGISTERED{Fore.RESET}] {url}")
+
 
 
 async def testalldomains(target, show_unregistered, show_status, ignored_domains, only_results, sem):
@@ -175,8 +183,10 @@ async def testalldomains(target, show_unregistered, show_status, ignored_domains
         if not only_results:
             print("Fake domain test complete")
             print(f"\n{Style.BRIGHT}Scanning...\n")
+        print_lock = asyncio.Lock() #prevent race condition
+        counter_data = {"threats": 0}
         tasks = [
-            test_single_url(session, url, show_unregistered, show_status, ignored_domains, baseline_signatures, target, sem) 
+            test_single_url(session, url, show_unregistered, show_status, ignored_domains, baseline_signatures, target, sem, print_lock, counter_data) 
             for url in all_domains
         ]
         try:

@@ -18,7 +18,7 @@ host_suffixes = [".vercel.app", ".netlify.app", ".pages.dev", ".github.io",
 from pathlib import Path
 
 current_file = Path(__file__).resolve()
-alltlds_path = current_file.parent.parent / "alltlds.txt"
+alltlds_path = current_file.parent / "alltlds.txt"
 
 tldlist = []
 with open(alltlds_path, "r") as tldfile:

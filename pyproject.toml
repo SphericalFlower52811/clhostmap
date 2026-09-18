@@ -8,10 +8,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "clhostmap"
-version = "1.0.0"
+version = "1.1.0"
 readme = "README.md"
 description = "Tool to check if other people have tried impersonating your company/website."
 requires-python = ">=3.12"
+
+authors = [
+    { name = "SphericalFlower52811", email = "sphericalflower52811@gmail.com" }
+]
+
 keywords = [
     "osint",
     "brand-protection",
