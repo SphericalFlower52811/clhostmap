@@ -66,6 +66,7 @@ clhostmap example.com -ss -ccr 240
 Version 1.1.0 added
 
 - More cloud host providers and changing hardcoded TLDs to a txt from IANA
+- Added clearer messages
 
 ## Upcoming additions
 
