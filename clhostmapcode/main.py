@@ -1,4 +1,4 @@
-from .hostlist import host_suffixes, country_tlds, generic_tlds_1, generic_tlds_2
+from .hostlist import host_suffixes, tldlist
 import argparse
 from colorama import init, Fore, Style
 from curl_cffi.requests import AsyncSession, errors
@@ -41,7 +41,7 @@ def extract_brand_name(user_input):
 
 async def testhashes(session, sem):
     baselines = {}
-    all_extensions = list(host_suffixes) + list(country_tlds) + list(generic_tlds_1) + list(generic_tlds_2)
+    all_extensions = list(host_suffixes) + list(tldlist)
     shared_hash = gen_hash()[:16]   
     baseline_tasks = []
     extension_map = []
@@ -162,16 +162,10 @@ async def testalldomains(target, show_unregistered, show_status, ignored_domains
     for suffix in host_suffixes:
         all_domains.append(f"https://{target}{suffix}")
         
-    for tld in country_tlds:
+    for tld in tldlist:
         tld = tld if tld.startswith('.') else f".{tld}"
         all_domains.append(f"https://{target}{tld}")
-        
-    for tld in generic_tlds_1:
-        tld = tld if tld.startswith('.') else f".{tld}"
-        all_domains.append(f"https://{target}{tld}")
-    for tld in generic_tlds_2:
-        tld = tld if tld.startswith('.') else f".{tld}"
-        all_domains.append(f"https://{target}{tld}")
+
     if not only_results:
         print(f"Loaded {len(all_domains)} total hosts to test.\n")
     async with AsyncSession() as session:
@@ -210,7 +204,7 @@ def chtrack():
         init(autoreset=True)
         print()
         print("-" * 65)
-        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.0.0")
+        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.1.0")
         print()
         print(f"Made by: {Fore.LIGHTMAGENTA_EX}SphericalFlower52811")
         print()

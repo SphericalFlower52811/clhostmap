@@ -1,4 +1,4 @@
-# ClHostMap: A tool to check if your website has been impersonated.
+# ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.0)
 
 ## What is ClHostMap?
 
@@ -17,7 +17,7 @@ ClHostMap allows you to input your brand name, and the tool automatically checks
 Features of ClHostMap include:
 
 - Using a hash to check every TLD and host provider, as some host providers return a 200 OK response code but on the frontend say it is fake. This ensures no false positives will be captured.
-- With 954 different TLDs in total and 66 cloud providers, the tool checks a total of 1020 different places an impersonated version of your website can be hosted.
+- 68 cloud host providers (like `.vercel.app`) and every TLD from IANA.
 - Asynchronous function so that it runs hundreds of checks all at once.
 
 ### All Arguments
@@ -60,6 +60,12 @@ Run scan with 240 concurrent requests and to see status codes:
 ```
 clhostmap example.com -ss -ccr 240
 ```
+
+## Release notes
+
+Version 1.1.0 added
+
+- More cloud host providers and changing hardcoded TLDs to a txt from IANA
 
 ## Upcoming additions
 
