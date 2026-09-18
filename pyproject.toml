@@ -6,9 +6,12 @@ include = ["clhostmapcode*"]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.package-data]
+clhostmapcode = ["alltlds.txt"]
+
 [project]
 name = "clhostmap"
-version = "1.1.0"
+version = "1.1.1"
 readme = "README.md"
 description = "Tool to check if other people have tried impersonating your company/website."
 requires-python = ">=3.12"
