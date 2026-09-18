@@ -1,8 +1,8 @@
-# ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.2)
+# ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.3)
 
 ## What is ClHostMap?
 
-ClHostMap is a tool that checks many cloud providers, and many TLDs for whether your website has been registered by other people.
+ClHostMap (standing for Cloud Host Map) is a tool that checks many cloud providers, and many TLDs for whether your website has been registered by other people.
 
 ## Why use ClHostMap?
 

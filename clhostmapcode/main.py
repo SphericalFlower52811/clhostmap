@@ -214,11 +214,12 @@ def chtrack():
         init(autoreset=True)
         print()
         print("-" * 65)
-        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.1.0")
+        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.1.3")
         print()
         print(f"Made by: {Fore.LIGHTMAGENTA_EX}SphericalFlower52811")
         print()
         print(f"{Fore.LIGHTBLUE_EX}GitHub: {Fore.RESET}{Style.BRIGHT}https://github.com/SphericalFlower52811/clhostmap")
+        print(f"{Fore.LIGHTBLUE_EX}Docs: {Fore.RESET}{Style.BRIGHT}https://clhostmap.sphericalflower52811.pages.dev")
         print("-" * 65)
         print()
 
