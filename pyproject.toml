@@ -11,7 +11,7 @@ clhostmapcode = ["alltlds.txt"]
 
 [project]
 name = "clhostmap"
-version = "1.1.1"
+version = "1.1.2"
 readme = "README.md"
 description = "Tool to check if other people have tried impersonating your company/website."
 requires-python = ">=3.12"
