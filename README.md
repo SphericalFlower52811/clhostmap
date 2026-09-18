@@ -1,4 +1,4 @@
-# ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.3)
+# ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.4)
 
 ## What is ClHostMap?
 

@@ -214,7 +214,7 @@ def chtrack():
         init(autoreset=True)
         print()
         print("-" * 65)
-        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.1.3")
+        print(f"{Style.BRIGHT}ClHostMap {Fore.LIGHTMAGENTA_EX}v1.1.4")
         print()
         print(f"Made by: {Fore.LIGHTMAGENTA_EX}SphericalFlower52811")
         print()
