@@ -1,6 +1,6 @@
 # ClHostMap: A tool to check if your website has been impersonated. (Version 1.1.4)
 
-**Source code at: [EndpointScanner Repository](https://github.com/SphericalFlower52811/endpointscanner)**
+**Source code at: [EndpointScanner Repository](https://github.com/SphericalFlower52811/clhostmap)**
 
 The dev branch hosts new features that may not be the full update, main branch will only contain stable updates to install.
 
